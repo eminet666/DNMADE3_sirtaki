@@ -13,20 +13,40 @@
         <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
         <script src="./js/unlock_audio_ios.js"></script>
 
-        <script src="./js/component.js"></script>
-
+        <script content-type="text/javascript" src="./js/component.js"></script>
+<!-- X-Content-Type-Options="nosniff" -->
 
     </head>
 
     <body>
         <a-scene>
             <a-assets>
+                <a-asset-item id="alizee" src="./assets/models/alizee_leo.glb"></a-asset-item>
                 <audio id="zorba" src="./assets/audio/zorba.mp3" preload="auto" loop="false"></audio>
             </a-assets>
 
-          <a-camera>
-            <a-cursor id="curseur"></a-cursor>
-          </a-camera>
+            <a-entity id="renard"
+                      position="-4 -2 -9"
+                      rotation="0 60 0"
+                      scale="1 1 1"
+                      gltf-model="#alizee"
+                      animation-mixer="clip: pas_01_D"
+                      init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02_F"
+                      >
+            </a-entity>
+                      <!-- init_anim ="objet: renard; animMixerAttribute: clip:Run" -->
+            <a-text id="texte" value="teach me to dance ?" align="center" color="#FFF"
+                    visible="true" position="1 0.75 -3"
+                    geometry="primitive: plane; width: 2; height: 0.5" material="color: #333"
+                    event-set__curseur="_event: mouseleave; _target: #curseur; visible: false"
+                    event-set__texte="_event: mouseleave; _target: #texte; visible: false"
+                    init_sound="audio: zorba"
+                    >
+            </a-text>
+
+            <a-camera>
+                <a-cursor id="curseur"></a-cursor>
+            </a-camera>
 
         </a-scene>
 
