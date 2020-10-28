@@ -1,4 +1,4 @@
-
+<script content-type="text/javascript">
 // ----------------------------------------------------------
 // CHARGEMENT MODELE
 // ----------------------------------------------------------
@@ -77,7 +77,7 @@ AFRAME.registerComponent('init_sound', {
         var audio = this.data.audio;
         var el = this.el;
         el.addEventListener('mouseenter', function () {
-            var son = document.getElementById('bruit');
+            var son = document.getElementById(audio);
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             var contexteAudio = new AudioContext;
             unlockAudioIOS(contexteAudio); // ok pour context = AudioContext;
@@ -142,3 +142,6 @@ AFRAME.registerComponent('init_anim_delai', {
       }, {once : true});
   }
 });
+
+
+</script>
