@@ -16,3 +16,7 @@ Il serait bien d'ajouter 2 actions supplémentaires pour le meneur au moins :
 
 
 # synchro audio
+
+# environnement
+pour un flashmob, possibilité de choisir votre rue
+https://svd360.istreetview.com/

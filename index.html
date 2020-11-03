@@ -16,6 +16,14 @@
         <!-- <script content-type="text/javascript" src="./js/component.js"></script> -->
 
         <script>
+        // var actions_index = 0;
+        // var 3DModel = [ "alizee", "cecile", "come", "antoine", "leo"];
+        // var clip = [ "pas_01_D", "pas_02_F", "pas_03_D", "pas_O4_F", "pas_05_F"];
+        // var options_index = 0;
+        // var repet = [ 1, 4, 3, 2, 5, 3, 6, 2];
+        // var duree = [ 4, 2, 2, 2, 1, 1, 1, 0.5];
+        // var data = "clip: "+clip[actions_index]+"; crossFadeDuration: .3; repetitions : "+repet+"; duration: "+duree;
+
         // CHARGEMENT MODELE
         AFRAME.registerComponent('model_loaded', {
             init: function() {
@@ -141,9 +149,13 @@
               var animdata = this.data.animdata;
               const son = document.getElementById(this.data.audio);
               son.addEventListener('playing', (event) => {
+                  console.log("duree = "+son.duration);
                   setTimeout(function() {
                       el.removeAttribute("animation-mixer");
-                      el.setAttribute("animation-mixer", animdata);
+                      var temp = "; duration: 4;"
+                      var toto = animdata + temp;
+                      console.log(el.id+"_ animdata"+toto);
+                      el.setAttribute("animation-mixer", toto);
                   }, delai);
               });
           }
@@ -154,7 +166,10 @@
 
     <body style='margin : 0px; overflow: hidden;'>
 
+        <!-- SCENE AFRAME -->
         <a-scene background="color: skyblue">
+
+            <!-- CHARGEMENT DES ASSETS -->
     		<a-assets>
     			<a-asset-item id="glbAlizee" src="./assets/models/alizee_leo.glb"></a-asset-item>
     			<a-asset-item id="glbAntoine" src="./assets/models/antoine_hugo.glb"></a-asset-item>
@@ -163,17 +178,18 @@
     			<a-asset-item id="glbGenia" src="./assets/models/genia_cecile.glb"></a-asset-item>
     			<!-- <a-asset-item id="glbHugo" src="./assets/models/hugo_antoine.glb"></a-asset-item> -->
     			<a-asset-item id="glbLeo" src="./assets/models/leo_alizee.glb"></a-asset-item>
-    			<a-asset-item id="glbLoic" src="./assets/models/loic_marion.glb"></a-asset-item>
+    			<!-- <a-asset-item id="glbLoic" src="./assets/models/loic_marion.glb"></a-asset-item> -->
     			<!-- <a-asset-item id="glbMartin" src="./assets/models/martin_tom.glb"></a-asset-item> -->
 
                 <audio id="zorba" src="./assets/audio/zorba.mp3" preload="auto" loop="false"></audio>
                 <img id="img360" crossorigin="anonymous" src="./assets/img/ioannis.jpg" />
             </a-assets>
 
-            <!-- lumières -->
+            <!-- ECLAIRAGES -->
 			<a-entity light="type: ambient; color: #CCC; intensity: 1"></a-entity>
 			<a-entity light="type: directional; castShadow:true; intensity: 0.5" position="-1 2 1"></a-entity>
 
+            <!-- MODELES 3D -->
             <a-entity id ="alizee"  gltf-model="#glbAlizee" loaded
                       position="0 0 -3" rotation="90 0 90"
                       animation-mixer="timeScale: 0"
@@ -181,17 +197,32 @@
                       init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02_F;">
             </a-entity>
 
-            <a-entity   id ="antoine" position="-1 0 -5" gltf-model="#glbAntoine" rotation="90 0 90" loaded animation-mixer="timeScale: 0"
-                        init_anim_delai="audio: zorba; delai: 7000; animdata: clip: pas_02_F;">
+            <a-entity  id ="antoine" position="-1 0 -4" gltf-model="#glbAntoine" rotation="90 0 90"
+                       loaded animation-mixer="timeScale: 0"
+                       shadow="cast:true; receive:true"
+                       init_anim_delai="audio: zorba; delai: 7000; animdata: clip: pas_02;">
             </a-entity>
-            <a-entity   id ="cecile"  position="1 0 -5" gltf-model="#glbCecile"  rotation="90 90 90" loaded animation-mixer="timeScale: 0"></a-entity>
-            <a-entity   id ="come"    position="2 0 -5" gltf-model="#glbCome"    rotation="90 0 90" loaded animation-mixer="timeScale: 0"></a-entity>
+            <a-entity  id ="cecile"  position="1 0 -4" gltf-model="#glbCecile"  rotation="90 90 90"
+                       loaded animation-mixer="timeScale: 0"
+                       shadow="cast:true; receive:true"
+                       init_anim_delai="audio: zorba; delai: 7000; animdata: clip: pas_02_D;">
+            </a-entity>
+            <a-entity  id ="come"    position="2 0 -5" gltf-model="#glbCome"    rotation="90 0 90"
+                       loaded animation-mixer="timeScale: 0"
+                       shadow="cast:true; receive:true"
+                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02_D;">
+            </a-entity>
             <!-- <a-entity   id ="genia"   position="1 0 -5" gltf-model="#glbGenia"   rotation="90 90 90" loaded animation-mixer></a-entity> -->
-            <a-entity   id ="leo"     position="-2 0 -5" gltf-model="#glbLeo"     rotation="90 0 90" loaded animation-mixer="timeScale: 0"></a-entity>
+            <a-entity  id ="leo"     position="-2 0 -5" gltf-model="#glbLeo"    rotation="90 0 90"
+                       loaded animation-mixer="timeScale: 0"
+                       shadow="cast:true; receive:true"
+                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02_F;">
+            </a-entity>
             <!-- <a-entity   id ="loic"    position="0 0 -5" gltf-model="#glbLoic"    rotation="90 0 90" loaded animation-mixer></a-entity> -->
             <!-- <a-entity   id ="hugo"    position="0 0 -5" gltf-model="#glbHugo"    rotation="90 0 90" loaded></a-entity> -->
             <!-- <a-entity   id ="martin"  position="0 0 -5" gltf-model="#glbMartin"  rotation="90 0 90" loaded></a-entity> -->
 
+            <!-- ANNONCE -->
             <a-text id="texte" value="teach me to dance ?" align="center" color="#FFF"
                     visible="true" position="1 0.75 -2"
                     geometry="primitive: plane; width: 2; height: 0.5" material="color: #333"
@@ -201,7 +232,7 @@
                     >
             </a-text>
 
-            <!-- ENVIRONNEMENTS -->
+            <!-- ENVIRONNEMENTS (ici photo 360)-->
 			<a-sky src="#img360" rotation="0 150 0"></a-sky>
             <a-plane position="0 0 -4" rotation="-90 0 0"
                      width="8" height="8" color="#CCCCCC"
