@@ -3,14 +3,14 @@
 
 # actions : (pas de sirtaki)
 Les 5 pas de sirtaki sont les suivants :
-- pas_01_D
-- pas_02_F
-- pas_03_D
-- pas_O4_F
-- pas_05_F
+- pas_01
+- pas_02
+- pas_03
+- pas_O4
+- pas_05
 Il serait bien d'ajouter 2 actions supplémentaires pour le meneur au moins :
-- pas_00_idle  = position d'attente (les bras le long du corps)
-- pas_00_ready = le danseur se tourne de dos et tend les bras, prêt à démarrer
+- idle  = position d'attente (les bras le long du corps)
+- ready = le danseur se tourne de dos et tend les bras, prêt à démarrer
 
 # project aframe components
 
@@ -19,4 +19,5 @@ Il serait bien d'ajouter 2 actions supplémentaires pour le meneur au moins :
 
 # environnement
 pour un flashmob, possibilité de choisir votre rue
-https://svd360.istreetview.com/
+- [logiciel](https://svd360.istreetview.com/)
+- [carte](https://iStreetView.com)
