@@ -36,9 +36,8 @@
   </head>
 
   <body style="margin: 0; overflow: hidden;">
-    <p id="info"><b>cherchez une boule jaune, un cube rouge et un texte dans l'espace</b>
-        <br>- sur un ordinateur : cherchez dans l'espace avec la main (souris)
-        <br>- avec un smartphone (conseillé) : tournez l'écran autour de vous (mode portait)
+    <p id="info"><b>Teach me to dance !</b>
+        <br>tournez se smartphone autour de vous (mode paysage)
     </p>
     <a-scene embedded
              arjs="sourceType: webcam; trackingMethod: best; debugUIEnabled: false;"
@@ -53,11 +52,20 @@
         <a-entity light="type: ambient; color: #CCC; intensity: 1"></a-entity>
         <a-entity light="type: directional; castShadow:true; intensity: 0.5" position="-1 2 1"></a-entity>
 
-        <a-sphere position="0 0 0" scale="0.1 0.1 0.1"
-                  material="color: yellow;"                  
+        <!-- MODELE -->
+        <a-entity  id ="antoine" position="0 0 0" rotation="90 0 90"
+                   gltf-model="#glbAntoine"
+                   shadow="cast:true; receive:true"
+                   look-at="[gps-camera]"
+                   gps-entity-place="latitude: 48.86065; longitude: 2.37396;"
+                   animation-mixer>
+        </a-entity>
+
+        <!-- <a-sphere position="0 0 0" scale="0.1 0.1 0.1"
+                  material="color: yellow;"
                   look-at="[gps-camera]"
                   gps-entity-place="latitude: 48.86067; longitude: 2.37398;">
-        </a-shere>
+        </a-shere> -->
 
       <a-camera gps-camera='gpsMinDistance: 5' rotation-readerlook-controls-enabled='false' arjs-look-controls='smoothingFactor: 0.1'> </a-camera>
     </a-scene>
