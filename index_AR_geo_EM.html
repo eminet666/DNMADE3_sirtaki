@@ -53,13 +53,18 @@
             <a-marker preset="hiro" id='marker-hiro' registerevents>
 
                 <!-- MODELE -->
-                <a-entity  id ="antoine" position="0 0 0" rotation="90 0 90"
+                <!-- <a-entity  id ="antoine" position="0 0 0" rotation="90 0 90"
                            gltf-model="#glbAntoine"
                            shadow="cast:true; receive:true"
                            look-at="[gps-camera]"
                            gps-entity-place="latitude: 48.86065; longitude: 2.37396;"
                            animation-mixer>
-                </a-entity>
+                </a-entity> -->
+                <a-box position='0 0 0' material='color: red;'
+                       scale="0.5 0.5 0.5" rotation="45 45 45" position="0 1 0"
+                       look-at="[gps-camera]"
+                       gps-entity-place="latitude: 48.86065; longitude: 2.37396;">
+                </a-box>
 
                 <!-- ENVIRONNEMENT -->
                 <a-plane position="0 0 0" rotation="-90 0 0"
