@@ -4,8 +4,8 @@ Thumbs.db
 ~*.*
 
 # ignore files
-# /index_AR_geo_EM.html
-# /index_AR_geo_JLB.html
+/z-index_AR_geo_EM.html
+/z-index_AR_geo_JLB.html
 
 # ignore rep
 /z_*
