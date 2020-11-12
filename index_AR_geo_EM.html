@@ -53,9 +53,9 @@
         <a-entity light="type: ambient; color: #CCC; intensity: 1"></a-entity>
         <a-entity light="type: directional; castShadow:true; intensity: 0.5" position="-1 2 1"></a-entity>
 
-        <a-sphere position="0 0 0"
-                  material="color: yellow;"
-                  scale="0.1 0.1 0.1"
+        <a-sphere position="0 0 0" scale="0.1 0.1 0.1"
+                  material="color: yellow;"                  
+                  look-at="[gps-camera]"
                   gps-entity-place="latitude: 48.86067; longitude: 2.37398;">
         </a-shere>
 
@@ -63,7 +63,7 @@
     </a-scene>
 
     <!-- GESTION AUDIO -->
-    <!-- <button id="bouton" style="position: absolute; left: 20px; bottom: 20px;">SON ON</button>
+    <button id="bouton" style="position: absolute; left: 20px; bottom: 20px;">SON ON</button>
 
     <script>
         var b = document.querySelector('#bouton');
@@ -96,7 +96,7 @@
             //document.removeEventListener("click", resumeAudio);
         }
         b.onclick = resumeAudio;
-      </script> -->
+      </script>
 
   </body>
 </html>
