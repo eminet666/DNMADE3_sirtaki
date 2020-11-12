@@ -1,0 +1,11 @@
+# ignore files
+.DS_Store
+Thumbs.db
+~*.*
+
+# ignore files
+# /index_AR_geo_EM.html
+# /index_AR_geo_JLB.html
+
+# ignore rep
+/z_*
