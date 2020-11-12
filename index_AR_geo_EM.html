@@ -44,14 +44,16 @@
              vr-mode-ui="enabled: false">
 
         <a-assets>
-            <a-asset-item id="glbAntoine" src="./assets/models/antoine_hugo.glb"></a-asset-item>
+            <a-asset-item id="3Dmodel" src="./assets/models/alizee_leo.glb"></a-asset-item>
+
+            <!-- <a-asset-item id="3Dmodel" src="./assets/models/antoine_hugo.glb"></a-asset-item> -->
             <audio id="zorba" src="./assets/audio/zorba.mp3" preload="auto" loop="false"></audio>
         </a-assets>
 
         <!-- MODELE -->
-        <a-entity  id ="antoine" position="0 0 0" rotation="180 -90 0"
+        <a-entity  id ="antoine" rotation="180 -90 0"
                    scale="6 6 6"
-                   gltf-model="#glbAntoine"
+                   gltf-model="#3Dmodel"
                    look-at="[gps-camera]"
                    gps-entity-place="latitude: 48.86065; longitude: 2.37396;"
                    animation-mixer>
