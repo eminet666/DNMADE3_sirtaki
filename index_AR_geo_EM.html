@@ -44,13 +44,13 @@
              vr-mode-ui="enabled: false">
 
         <a-assets>
-            <a-asset-item id="3Dmodel" src="./assets/models/alizee_leo.glb"></a-asset-item>
-            <!-- <a-asset-item id="3Dmodel" src="./assets/models/antoine_hugo.glb"></a-asset-item> -->
+            <!-- <a-asset-item id="3Dmodel" src="./assets/models/alizee_leo.glb"></a-asset-item> -->
+            <a-asset-item id="3Dmodel" src="./assets/models/antoine_hugo.glb"></a-asset-item>
             <audio id="zorba" src="./assets/audio/zorba.mp3" preload="auto" loop="false"></audio>
         </a-assets>
 
         <!-- MODELE -->
-        <a-entity  id ="danseur" position="0 0 0" rotation="90 -90 0"
+        <a-entity  id ="danseur" position="0 -1 0" rotation="90 90 0"
                    scale="6 6 6"
                    gltf-model="#3Dmodel"
                    gps-entity-place="latitude: 48.86065; longitude: 2.37396;"
@@ -90,7 +90,7 @@
                   audio.muted = false;
                   b.innerHTML = "SON OFF";
                   console.log("SON OFF");
-                  i..style.visibility = "hidden"; 
+                  //i.style.visibility = "hidden";
             }
             else {
                   contexteAudio.suspend();
