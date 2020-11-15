@@ -16,6 +16,9 @@
         <!-- <script content-type="text/javascript" src="./js/component.js"></script> -->
 
         <script>
+        var all_models_loaded = false;
+        var music_loaded = false;
+
         // var actions_index = 0;
         // var 3DModel = [ "alizee", "cecile", "come", "antoine", "leo"];
         // var clip = [ "pas_01_D", "pas_02_F", "pas_03_D", "pas_O4_F", "pas_05_F"];
@@ -30,6 +33,8 @@
                 var el = this.el;
                 el.addEventListener('model-loaded', () => {
                     console.log(">>>> modele chargé "+el.id);
+                    all_models_loaded = true;
+                    console.log(">>>> all_models_loaded = true _ "+el.id);
                 });
                 el.addEventListener('model-error', () => {
                       console.log(">>>> modele erreur"+el.id);
@@ -172,11 +177,11 @@
             <!-- CHARGEMENT DES ASSETS -->
     		<a-assets>
     			<a-asset-item id="glbAlizee" src="./assets/models/alizee_leo.glb"></a-asset-item>
-    			<a-asset-item id="glbAntoine" src="./assets/models/antoine_hugo.glb"></a-asset-item>
+    			<!-- <a-asset-item id="glbAntoine" src="./assets/models/antoine_hugo.glb"></a-asset-item>
     			<a-asset-item id="glbCecile" src="./assets/models/cecile_genia.glb"></a-asset-item>
     			<a-asset-item id="glbCome" src="./assets/models/come_adrien.glb"></a-asset-item>
     			<a-asset-item id="glbGenia" src="./assets/models/genia_cecile.glb"></a-asset-item>
-    			<a-asset-item id="glbLeo" src="./assets/models/leo_alizee.glb"></a-asset-item>
+    			<a-asset-item id="glbLeo" src="./assets/models/leo_alizee.glb"></a-asset-item> -->
 
     			<!-- <a-asset-item id="glbLoic" src="./assets/models/loic_marion.glb"></a-asset-item> -->
     			<!-- <a-asset-item id="glbMartin" src="./assets/models/martin_tom.glb"></a-asset-item> -->
@@ -191,14 +196,14 @@
 			<a-entity light="type: directional; castShadow:true; intensity: 0.5" position="-1 2 1"></a-entity>
 
             <!-- MODELES 3D -->
-            <a-entity id ="alizee"  gltf-model="#glbAlizee" loaded
+            <a-entity id ="alizee"  gltf-model="#glbAlizee" model_loaded
                       position="0 0 -3" rotation="90 0 90"
                       animation-mixer="timeScale: 0"
                       shadow="cast:true; receive:true"
-                      init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02;">
+                      init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02_F;">
             </a-entity>
 
-            <a-entity  id ="antoine" position="-1 0 -4" gltf-model="#glbAntoine" rotation="90 90 90"
+            <!-- <a-entity  id ="antoine" position="-1 0 -4" gltf-model="#glbAntoine" rotation="90 0 90"
                        loaded animation-mixer="timeScale: 0"
                        shadow="cast:true; receive:true"
                        init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02;">
@@ -206,32 +211,33 @@
             <a-entity  id ="cecile"  position="1 0 -4" gltf-model="#glbCecile"  rotation="90 90 90"
                        loaded animation-mixer="timeScale: 0"
                        shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02;">
+                       init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02_D;">
             </a-entity>
             <a-entity  id ="come"    position="2 0 -5" gltf-model="#glbCome"    rotation="90 0 90"
                        loaded animation-mixer="timeScale: 0"
                        shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02_D;">
             </a-entity>
-            <!-- <a-entity   id ="genia"   position="1 0 -5" gltf-model="#glbGenia"   rotation="90 90 90" loaded animation-mixer></a-entity> -->
             <a-entity  id ="leo"     position="-2 0 -5" gltf-model="#glbLeo"    rotation="90 0 90"
                        loaded animation-mixer="timeScale: 0"
                        shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
-            </a-entity>
+                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02_F;">
+            </a-entity> -->
+
+            <!-- <a-entity   id ="genia"   position="1 0 -5" gltf-model="#glbGenia"   rotation="90 90 90" loaded animation-mixer></a-entity> -->
             <!-- <a-entity   id ="loic"    position="0 0 -5" gltf-model="#glbLoic"    rotation="90 0 90" loaded animation-mixer></a-entity> -->
             <!-- <a-entity   id ="hugo"    position="0 0 -5" gltf-model="#glbHugo"    rotation="90 0 90" loaded></a-entity> -->
             <!-- <a-entity   id ="martin"  position="0 0 -5" gltf-model="#glbMartin"  rotation="90 0 90" loaded></a-entity> -->
 
             <!-- ANNONCE -->
-            <!-- <a-text id="texte" value="teach me to dance ?" align="center" color="#FFF"
+            <a-text id="texte" value="teach me to dance ?" align="center" color="#FFF"
                     visible="true" position="1 0.75 -2"
                     geometry="primitive: plane; width: 2; height: 0.5" material="color: #333"
                     event-set__curseur="_event: mouseenter; _target: #curseur; visible: false"
                     event-set__texte="_event: mouseenter; _target: #texte; visible: false"
                     init_sound="audio: zorba"
                     >
-            </a-text> -->
+            </a-text>
 
             <!-- ENVIRONNEMENTS (ici photo 360)-->
 			<a-sky src="#img360" rotation="0 150 0"></a-sky>
@@ -246,41 +252,7 @@
             </a-camera>
 
         </a-scene>
-        <!-- GESTION AUDIO -->
-        <button id="bouton" style="position: absolute; left: 20px; bottom: 20px;">SON ON</button>
 
-        <script>
-            var b = document.querySelector('#bouton');
-            var son = document.querySelector('#zorba');
-
-            var AudioContext = window.AudioContext || window.webkitAudioContext;
-            var contexteAudio = new AudioContext;
-
-            unlockAudioIOS(contexteAudio); // ok pour context = AudioContext;
-
-            function resumeAudio() {
-                console.log(contexteAudio.state);
-
-                if(contexteAudio.state == "suspended")
-                {
-                      contexteAudio.resume();
-                      console.log('Playback resumed successfully');
-                      son.play();
-                      b.innerHTML = "SON OFF";
-                      console.log("SON OFF");
-                }
-                else {
-                      contexteAudio.suspend();
-                      console.log('Playback paused successfully');
-                      son.pause();
-                      b.innerHTML = "SON ON";
-                      console.log("SON ON");
-                }
-                //document.removeEventListener("click", resumeAudio);
-            }
-            b.onclick = resumeAudio;
-
-          </script>
 
     </body>
 </html>
