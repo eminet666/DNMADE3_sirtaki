@@ -16,13 +16,25 @@
         <!-- <script content-type="text/javascript" src="./js/component.js"></script> -->
 
         <script>
-        // var actions_index = 0;
-        // var 3DModel = [ "alizee", "cecile", "come", "antoine", "leo"];
-        // var clip = [ "pas_01_D", "pas_02_F", "pas_03_D", "pas_O4_F", "pas_05_F"];
-        // var options_index = 0;
-        // var repet = [ 1, 4, 3, 2, 5, 3, 6, 2];
-        // var duree = [ 4, 2, 2, 2, 1, 1, 1, 0.5];
-        // var data = "clip: "+clip[actions_index]+"; crossFadeDuration: .3; repetitions : "+repet+"; duration: "+duree;
+        // DONNEES CHOREGRAPHIE
+        // durée en seconde de chaque pas à vitesse normale :
+        // ready / pas_01 / pas_02 / pas_03 / pas_04 / pas_05
+        let duree_pas = [2, 6, 4, 2.5, 5.5, 5];
+
+        // périodes danse en secondes
+        let danse = [
+            { debut:   0, vitesse: 0.7 },
+            { debut:  56, vitesse: 1 },
+            { debut:  99, vitesse: 1.5 },
+            { debut: 138, vitesse: 2.5 },
+            { debut: 185, vitesse: 5}
+        ];
+
+        // donnees programme
+        const pas = "pas_0";
+        var periode = 0;
+        var animdata ="";
+        let danseurs = [];
 
         // CHARGEMENT MODELE
         AFRAME.registerComponent('model_loaded', {
@@ -36,131 +48,84 @@
                     });
             }
         });
-
-        // ACTION FINIE _ LOOP FINIE
-        // ----------------------------------------------------------
-        var nb_loop = 0;
-        AFRAME.registerComponent('action_finished', {
-            init: function() {
-                var el = this.el;
-                el.addEventListener('animation-finished', () => {
-                    console.log(">>>> action finie"+el.id);
-                    nb_loop = 0;
-                });
-                el.addEventListener('animation-loop', () => {
-                    nb_loop++;
-                    console.log(">>>> loop terminée n°"+nb_loop);
-                });
-            }
-        });
-
-        // CHARGEMENT SON
-        AFRAME.registerComponent('sound_loaded', {
-          init: function () {
-            var el = this.el;
-            el.addEventListener('sound-loaded', () => {
-              console.log(">>>> son chargé : "+el.id);
-              var entity = document.querySelector('[sound]');
-              entity.components.sound.playSound();
-              });
-            this.el.addEventListener('sound-error', () => {
-                console.log(">>>> son erreur : "+el.id);
-              });
-            }
-        });
-
         // SHADOW MATERIAL : 1 parametre opacite
         AFRAME.registerComponent('shadow-material', {
-        	schema: {
-        		opacite: {type: 'number', default: 0.5}
-        	},
-        	init: function(){
-        		let el = this.el;
-        		let mesh = el.getObject3D('mesh');
-        		// console.log(mesh);
-        		if (!mesh){return;}
-        		mesh.material = new THREE.ShadowMaterial();
-            	mesh.material.opacity = this.data.opacite;
+            schema: {
+                opacite: {type: 'number', default: 0.5}
+            },
+            init: function(){
+                let el = this.el;
+                let mesh = el.getObject3D('mesh');
+                // console.log(mesh);
+                if (!mesh){return;}
+                mesh.material = new THREE.ShadowMaterial();
+                mesh.material.opacity = this.data.opacite;
             }
         });
 
-        // DEMARRAGE AUDIO (mouseenter) : 1 parametre audio = id de l'audio
-        AFRAME.registerComponent('init_sound', {
-          schema: {
-              audio: {type: 'string', default: ''}
-          },
-          init: function () {
-                var audio = this.data.audio;
-                var el = this.el;
-                el.addEventListener('mouseenter', function () {
-                    var son = document.getElementById(audio);
-                    var AudioContext = window.AudioContext || window.webkitAudioContext;
-                    var contexteAudio = new AudioContext;
-                    unlockAudioIOS(contexteAudio); // ok pour context = AudioContext;
-                    console.log(">>>> audio state : "+contexteAudio.state);
-                    if(contexteAudio.state == "suspended")
-                    {
-                          contexteAudio.resume();
-                          son.play();
-                          console.log(">>>> SON ON : Playback resumed successfully");
-                    }
-                    else {
-                          contexteAudio.suspend();
-                          son.pause();
-                          console.log(">>>> SON OFF : Playback paused successfully");
-                    }
-                });
-          }
-        });
-
-        // DEMARRAGE ANIM (mouseleave) : 1 parametre anim-mixerAttribute
-        AFRAME.registerComponent('init_anim', {
-          schema: {
-                objet: {type: 'string', default: ''},
-                animdata: {type: 'string', default: ''}
-          },
-          init: function () {
-              var objet = this.data.objet;
-              var animdata = this.data.animdata;
-              var el = this.el;
-              el.addEventListener('mouseleave', function () {
-                  var cible = document.getElementById(objet);
-                  cible.removeAttribute("animation-mixer");
-                  cible.setAttribute("animation-mixer", animdata );
-              }, {once : true});
-          }
-        });
-
-        // DEMARRAGE ANIM (delai après démarrage audio) :
-        // 3 parametres :
+        // DEMARRAGE ANIM = READY (delai après démarrage audio) :
+        // 2 parametres :
         // - audio    = id de l'audio
         // - delai    = attente en ms avant de lancer anim
-        // - animdata = attributs pour animation mixer
         // ----------------------------------------------------------
-        AFRAME.registerComponent('init_anim_delai', {
+        AFRAME.registerComponent('delay_ready', {
           schema: {
                 audio: {type: 'string', default: ''},
                 delai: {type: 'number', default: 1000},
-                animdata: {type: 'string', default: ''},
           },
           init: function () {
               var el = this.el;
               var delai = this.data.delai;
-              var animdata = this.data.animdata;
               const son = document.getElementById(this.data.audio);
               son.addEventListener('playing', (event) => {
-                  console.log("duree = "+son.duration);
                   setTimeout(function() {
+                      var initdata = "clip: ready; clampWhenFinished: true; repetitions: 1; duration: 2;"
                       el.removeAttribute("animation-mixer");
-                      var temp = "; duration: 4;"
-                      var toto = animdata + temp;
-                      console.log(el.id+"_ animdata"+toto);
-                      el.setAttribute("animation-mixer", toto);
+                      el.setAttribute("animation-mixer", initdata);
+                      danseurs.push(el.id);
                   }, delai);
               });
           }
         });
+
+        AFRAME.registerComponent('sirtaki', {
+            init: function() {
+                var el = this.el;
+                el.addEventListener('animation-finished', () => {
+                    var clip = Math.floor((Math.random() * 5) + 1 );
+                    var repet = Math.floor((Math.random() * 3) + 1 );
+                    animdata = "clip: pas_0"+clip+"; crossFadeDuration: 0.3; repetitions: 1; ";
+                    var speed = danse[periode].vitesse;
+                    animdata = animdata + "duration: "+(duree_pas[clip]/speed).toFixed(1)+";"
+                    console.log("animdata : "+animdata);
+                    // el.removeAttribute("animation-mixer");
+                    // el.setAttribute("animation-mixer", animdata);
+                    var pas = document.querySelector('#pas');
+                    pas.innerHTML = animdata;
+                    updateModels();
+                });
+            }
+        });
+
+        function updateModels() {
+            var cible;
+            for(i = 0; i < danseurs.length; i++) {
+                cible = document.getElementById(danseurs[i]);
+                cible.removeAttribute("animation-mixer");
+                cible.setAttribute("animation-mixer", animdata);
+            }
+        }
+
         </script>
+        <style>
+			#musique {
+				position: absolute; left: 10px; bottom: 10px; width: 800px; height: 30px;
+				display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
+				border: dotted black 1px;
+			}
+			#bouton { height: 30px;}
+			p { font-size : 0.8em; font-family: Arial, Helvetica, sans-serif; margin-left: 20px; }
+		</style>
 
     </head>
 
@@ -176,7 +141,6 @@
      			<a-asset-item id="glbCecile" src="./assets/models/cecile_genia.glb"></a-asset-item>
     			<a-asset-item id="glbCome" src="./assets/models/come_adrien.glb"></a-asset-item>
     			<a-asset-item id="glbLeo" src="./assets/models/leo_alizee.glb"></a-asset-item>
-
     			<a-asset-item id="glbLoic" src="./assets/models/loic_marion.glb"></a-asset-item>
     			<a-asset-item id="glbMartin" src="./assets/models/martin_tom.glb"></a-asset-item>
                 <a-asset-item id="glbMarion" src="./assets/models/marion_loic.glb"></a-asset-item>
@@ -185,7 +149,7 @@
 				<!-- <a-asset-item id="glbAdrien" src="./assets/models/adrien_come.glb"></a-asset-item>				<a-asset-item id="glbJasmine" src="./assets/models/jasmine_louane.glb"></a-asset-item> -->
 		        <!-- <a-asset-item id="glbGenia" src="./assets/models/genia_cecile.glb"></a-asset-item> -->
 
-            	<a-asset-item id="glbLaurine" src="./assets/models/laurine_kilian.glb"></a-asset-item>
+            	<!-- <a-asset-item id="glbLaurine" src="./assets/models/laurine_kilian.glb"></a-asset-item> -->
 				<!-- <a-asset-item id="glbTom" src="./assets/models/tom_martin.glb"></a-asset-item> -->
 				<!-- <a-asset-item id="glbjasmine" src="./assets/models/jasmine_louane.glb"></a-asset-item> -->
 
@@ -198,96 +162,110 @@
 			<a-entity light="type: directional; castShadow:true; intensity: 0.5" position="-1 2 1"></a-entity>
 
             <!-- MODELES 3D -->
-            <a-entity id ="alizee"  gltf-model="#glbAlizee" loaded
-                      position="0 0 -3" rotation="90 0 90"
-                      animation-mixer="timeScale: 0"
-                      shadow="cast:true; receive:true"
-                      init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02;">
+            <a-entity  id ="alizee" gltf-model="#glbAlizee"
+					   position="0 0 -3" rotation="90 180 90"
+					   model_loaded shadow="cast:true; receive:true"
+					   animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+					   delay_ready="audio: zorba; delai: 5000;"
+					   sirtaki
+					   >
             </a-entity>
 
-            <a-entity  id ="antoine" position="-1 0 -4" gltf-model="#glbAntoine" rotation="90 90 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02;">
+            <a-entity  id ="antoine" gltf-model="#glbAntoine"
+                       position="-1 0 -4" rotation="90 -90 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 5000;"
+					   >
             </a-entity>
-            <a-entity  id ="cecile"  position="1 0 -4" gltf-model="#glbCecile"  rotation="90 90 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 5000; animdata: clip: pas_02;">
+            <a-entity  id ="cecile" gltf-model="#glbCecile"
+                       position="1 0 -4" rotation="90 -90 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 5000;"
+					   >
             </a-entity>
-            <a-entity  id ="come"    position="2 0 -5" gltf-model="#glbCome"    rotation="90 0 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+            <a-entity  id ="come" gltf-model="#glbCome"
+                       position="2 0 -5" rotation="90 180 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+					   >
             </a-entity>
-            <!-- <a-entity   id ="genia"   position="1 0 -5" gltf-model="#glbGenia"   rotation="90 90 90" loaded animation-mixer></a-entity> -->
-            <a-entity  id ="leo"     position="-2 0 -5" gltf-model="#glbLeo"    rotation="90 0 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+
+            <a-entity  id ="leo" gltf-model="#glbLeo"
+                       position="-2 0 -5" rotation="90 180 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+                       >
             </a-entity>
 
             <!-- A GAUCHE -->
-            <a-entity  id ="loic"     position="-6 0 -4" gltf-model="#glbLoic"    rotation="90 90 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+            <a-entity  id ="loic" gltf-model="#glbLoic"
+                       position="-6 0 -4" rotation="90 -90 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+                       >
             </a-entity>
-            <a-entity  id ="martin"     position="-8 0 -3" gltf-model="#glbMartin"    rotation="90 90 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+            <a-entity  id ="martin" gltf-model="#glbMartin"
+                       position="-8 0 -4" rotation="90 -90 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+                       >
             </a-entity>
-            <a-entity  id ="marion"     position="-7.5 0 -2" gltf-model="#glbMarion"    rotation="90 90 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+            <a-entity  id ="marion" gltf-model="#glbMarion"
+                       position="-7.5 0 -2" rotation="90 -90 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+                       >
             </a-entity>
 
             <!-- DERRIERE -->
-            <a-entity  id ="laurine"    position="5 0 2" gltf-model="#glbAlizee"    rotation="90 -135 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+            <a-entity  id ="laurine" gltf-model="#glbAlizee"
+                       position="5 0 2" rotation="90 45 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+                       >
             </a-entity>
-            <a-entity  id ="genia"     position="6 0 3.5" gltf-model="#glbLoic"    rotation="90 -135 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+            <a-entity  id ="genia" gltf-model="#glbLoic"
+                       position="6 0 3.5" rotation="90 45 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+                       >
             </a-entity>
-            <a-entity  id ="marion"     position="6 0 5.5" gltf-model="#glbAntoine"    rotation="90 -45 90"
-                       loaded animation-mixer="timeScale: 0"
-                       shadow="cast:true; receive:true"
-                       init_anim_delai="audio: zorba; delai: 9000; animdata: clip: pas_02;">
+            <a-entity  id ="killian" gltf-model="#glbAntoine"
+                       position="6 0 5.5" rotation="90 135 90"
+                       model_loaded shadow="cast:true; receive:true"
+                       animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
+                       delay_ready="audio: zorba; delai: 9000;"
+                       >
             </a-entity>
-
-
-
-            <!-- ANNONCE -->
-            <!-- <a-text id="texte" value="teach me to dance ?" align="center" color="#FFF"
-                    visible="true" position="1 0.75 -2"
-                    geometry="primitive: plane; width: 2; height: 0.5" material="color: #333"
-                    event-set__curseur="_event: mouseenter; _target: #curseur; visible: false"
-                    event-set__texte="_event: mouseenter; _target: #texte; visible: false"
-                    init_sound="audio: zorba"
-                    >
-            </a-text> -->
 
             <!-- ENVIRONNEMENTS (ici photo 360)-->
 			<a-sky src="#img360" rotation="0 150 0"></a-sky>
             <a-plane position="0 0 -4" rotation="-90 0 0"
-                     width="8" height="8" color="#CCCCCC"
+                     width="30" height="10" color="#CCCCCC"
                      shadow="receive: true"
                      shadow-material="opacite: 0.3">
             </a-plane>
 
-            <a-camera>
-                <a-cursor id="curseur"></a-cursor>
-            </a-camera>
+            <a-camera></a-camera>
 
         </a-scene>
+
         <!-- GESTION AUDIO -->
-        <button id="bouton" style="position: absolute; left: 20px; bottom: 20px;">SON ON</button>
+        <div id="musique">
+    		<button id="bouton">SON ON</button>
+    		<p id="info"></p>
+    		<p id="current"></p>
+    		<p id="pas"></p>
+		</div>
 
         <script>
             var b = document.querySelector('#bouton');
@@ -295,7 +273,6 @@
 
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             var contexteAudio = new AudioContext;
-
             unlockAudioIOS(contexteAudio); // ok pour context = AudioContext;
 
             function resumeAudio() {
@@ -319,6 +296,25 @@
                 //document.removeEventListener("click", resumeAudio);
             }
             b.onclick = resumeAudio;
+            // infos audio
+            var info = document.querySelector('#info');
+            var current = document.querySelector('#current');
+
+            son.ontimeupdate = function() {tps_ecoule()};
+            function tps_ecoule() {
+              var courant = son.currentTime.toFixed(2);
+              current.innerHTML = "temps écoulé : "+courant+"s";
+              info.innerHTML = "durée totale : "+son.duration.toFixed(2)+"s";
+              periode = getPeriode(courant);
+            }
+
+            function getPeriode(ref) {
+                var periode = 0;
+                for (i = 1 ; i < danse.length ; i++) {
+                      if(ref >= danse[i].debut) periode++;
+                }
+                return periode;
+            }
 
           </script>
 

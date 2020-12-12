@@ -27,6 +27,18 @@
 				{ debut: 185, vitesse: 5}
 			];
 
+			// CHARGEMENT MODELE
+	        AFRAME.registerComponent('model_loaded', {
+	            init: function() {
+	                var el = this.el;
+	                el.addEventListener('model-loaded', () => {
+	                    console.log(">>>> modele chargé "+el.id);
+	                });
+	                el.addEventListener('model-error', () => {
+	                      console.log(">>>> modele erreur"+el.id);
+	                    });
+	            }
+	        });
 			// SHADOW MATERIAL : 1 parametre opacite
 			AFRAME.registerComponent('shadow-material', {
 				schema: {
@@ -47,7 +59,7 @@
 	        // - audio    = id de l'audio
 	        // - delai    = attente en ms avant de lancer anim
 	        // ----------------------------------------------------------
-	        AFRAME.registerComponent('start_end', {
+	        AFRAME.registerComponent('delay_ready', {
 	          schema: {
 	                audio: {type: 'string', default: ''},
 	                delai: {type: 'number', default: 1000},
@@ -59,7 +71,7 @@
 	              son.addEventListener('playing', (event) => {
 					  playing = true;
 	                  setTimeout(function() {
-	                      var animdata = "clip: ready; crossFadeDuration: 0.3; repetitions: 1; duration: 2;"
+	                      var animdata = "clip: ready; crossFadeDuration: 0.3; repetitions: 1; duration: 1;"
 	                      console.log(el.id+"_ animdata"+animdata);
 	                      el.removeAttribute("animation-mixer");
 						  el.setAttribute("animation-mixer", animdata);
@@ -89,7 +101,6 @@
 	            }
 	        });
 
-
 		</script>
 
 		<style>
@@ -118,9 +129,10 @@
 
 			<a-entity  id ="model3D" gltf-model="#glbModel"
 					   position="-1 0 -4" rotation="90 180 90" scale="1 1 1"
+					   model_loaded
 					   shadow="cast:true; receive:true"
 					   animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
-					   start_end="audio: zorba; delai: 5000;"
+					   delay_ready="audio: zorba; delai: 5000;"
 					   sirtaki
 					   >
             </a-entity>
