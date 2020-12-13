@@ -1,5 +1,13 @@
 # DNMADE3_sirtaki
 
+# applications :
+
+- [test_3Dmodels](https://eminet666.github.io/DNMADE3_sirtaki/test_3Dmodels.html)
+- [test_chroregraphie](https://eminet666.github.io/DNMADE3_sirtaki/test_choregrahie.html)
+- [test_chroregraphie oculus](https://eminet666.github.io/DNMADE3_sirtaki/test_choregrahie_360.html)
+- [test_monastiraki](https://eminet666.github.io/DNMADE3_sirtaki/test_marion_espace.html)
+
+- [appli finale](https://eminet666.github.io/DNMADE3_sirtaki/index_final.html)
 
 # actions : (pas de sirtaki)
 Les 5 pas de sirtaki sont les suivants :
