@@ -137,7 +137,7 @@
             </a-assets>
 
 			<a-entity  id ="model3D" gltf-model="#glbModel"
-					   position="-1 0 -4" rotation="90 180 90" scale="1 1 1"
+					   position="-1 -6 -4" rotation="90 180 90" scale="1 1 1"
 					   model_loaded
 					   shadow="cast:true; receive:true"
 					   animation-mixer="clip: idle; clampWhenFinished: true; repetitions: 1; duration: 2; "
@@ -145,14 +145,14 @@
 					   sirtaki
 					   >
             </a-entity>
-			<a-plane position="0 0 -4" rotation="-90 0 0"
+			<a-plane position="0 -6 -4" rotation="-90 0 0"
 					 width="8" height="8" color="#CCCCCC"
 					 shadow="receive: true"
 					 shadow-material="opacite: 0.5">
 			</a-plane>
 
-			<a-sky src="#img360" position="0 6 0" rotation="0 150 0"></a-sky>
-			<a-camera></a-camera>
+			<a-sky src="#img360" rotation="0 150 0"></a-sky>
+			<a-camera position="0 -4.4 0"></a-camera>
     	</a-scene>
 
 		<div id="musique">
