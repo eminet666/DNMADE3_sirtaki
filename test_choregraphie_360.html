@@ -121,13 +121,8 @@
   </head>
 
   <body style='margin : 0px; overflow: hidden;'>
-		<a-scene background="color: skyblue"
-				 renderer="antialias: true;
-						   colorManagement: true;
-						   foveationLevel : 3;
-						   highRefreshRate: true;
-			               physicallyCorrectLights: true;"
-						   >
+		<a-scene background="color: skyblue">
+
 			<a-assets>
     			<a-asset-item id="glbModel" src="./assets/models/alizee_leo.glb"></a-asset-item>
                 <audio id="zorba" src="./assets/audio/zorba.mp3" preload="auto" loop="false"></audio>
@@ -150,7 +145,10 @@
 			</a-plane>
 
 			<a-sky src="#img360" rotation="0 150 0"></a-sky>
-			<a-camera position="0 -4 0"></a-camera>
+
+			<a-entity position="0 -4 0">
+			  <a-entity id="camera" camera look-controls></a-entity>
+			</a-entity>
     	</a-scene>
 
 		<div id="musique">

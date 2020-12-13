@@ -132,7 +132,12 @@
     <body style='margin : 0px; overflow: hidden;'>
 
         <!-- SCENE AFRAME -->
-        <a-scene background="color: skyblue">
+        <a-scene background="color: skyblue"
+                 renderer="antialias: true;
+                           colorManagement: true;
+                           foveationLevel : 3;
+                           highRefreshRate: true;
+                           physicallyCorrectLights: true;">
 
             <!-- CHARGEMENT DES ASSETS -->
     		<a-assets>
