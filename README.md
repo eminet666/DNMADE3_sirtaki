@@ -6,6 +6,7 @@
 - [test_chroregraphie](https://eminet666.github.io/DNMADE3_sirtaki/test_choregraphie.html)
 - [test_chroregraphie oculus](https://eminet666.github.io/DNMADE3_sirtaki/test_choregraphie_360.html)
 - [test_monastiraki](https://eminet666.github.io/DNMADE3_sirtaki/test_marion_espace.html)
+- [test_monastiraki_blender](https://maionaiiise.github.io/maionaiiise_VR)
 
 - [appli finale](https://eminet666.github.io/DNMADE3_sirtaki/index_final.html)
 
